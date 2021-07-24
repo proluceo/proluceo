@@ -2,10 +2,12 @@ require 'rake/clean'
 require 'pathname'
 require 'json'
 
-SRC_PATH = Pathname.new('./src')
-TMP_PATH = Pathname.new('./tmp')
-CLEAN.add('tmp/*.sql')
-CLEAN.add('schema.sql')
+SRC_PATH = Pathname.new('src')
+TMP_PATH = Pathname.new('tmp')
+BUILD_PATH = Pathname.new('build')
+
+CLEAN.add("#{TMP_PATH}/*.sql")
+CLEAN.add("#{BUILD_PATH}/schema.sql")
 
 @sequence = 0
 def add_source(filepath)
@@ -69,11 +71,12 @@ def create_task_with_deps(path)
   return task_fqn
 end
 
-directory 'tmp'
+directory TMP_PATH
+directory BUILD_PATH
 SRC_PATH.each_child { |child| create_task_with_deps(child) }
 
-file 'schema.sql' do
-  sh "cat #{TMP_PATH}/* > schema.sql"
+file 'schema.sql' => [:build] do
+  sh "cat #{TMP_PATH}/* > #{BUILD_PATH}/schema.sql"
 end
 
 task complete: [:clean, :tmp, :"roles:all", :"schemas:all", :"permissions", 'schema.sql']
