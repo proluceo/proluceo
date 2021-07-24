@@ -11,7 +11,7 @@ CLEAN.add('schema.sql')
 def add_source(filepath)
   puts "Adding #{filepath}"
   filename = filepath.each_filename.to_a.join('_')
-  FileUtils.ln_s(filepath.relative_path_from(TMP_PATH), TMP_PATH + "#{@sequence}-#{filename}")
+  FileUtils.ln_s(filepath.relative_path_from(TMP_PATH), TMP_PATH + "#{@sequence.to_s.rjust(10,'0')}-#{filename}")
   @sequence += 1
 end
 
@@ -38,6 +38,9 @@ def create_task_with_deps(path)
             path.dirname
           end
           dep_fullpath = Pathname.new(File.join(base_path,dep.split(':').reject(&:empty?)) + '.sql')
+          if !dep_fullpath.exist?
+            raise "Cannot find dependency #{dep_fullpath}"
+          end
           create_task_with_deps(dep_fullpath)
         end
       end
@@ -57,11 +60,10 @@ def create_task_with_deps(path)
     # Create files tasks first
     deps = path.children.select(&:file?).map { |child| create_task_with_deps(child) }
     deps += path.children.select(&:directory?).map { |child| create_task_with_deps(child) }
-    #Rake::Task.define_task(task_fqn, deps)
     t = Rake::Task.define_task(task_fqn.to_sym => deps)
     #puts "Defined task '#{t}' with deps #{deps}"
   else
-    puts "Ignoring file #{path}"
+    #puts "Ignoring file #{path}"
   end
 
   return task_fqn
