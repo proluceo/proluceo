@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:functions:account_number_to_path"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:functions:account_number_to_path", "::schemas:public:extensions:ltree"]
 CREATE TABLE accounting.accounts (
     company_id integer NOT NULL,
     number integer NOT NULL,
