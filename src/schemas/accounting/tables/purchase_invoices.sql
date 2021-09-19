@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:types:purchase_invoice_line"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:types:purchase_invoice_line", "::schemas:accounting:trigger_functions:b64decode_attachment"]
 CREATE TABLE accounting.purchase_invoices (
     purchase_invoice_id integer NOT NULL,
     company_id integer NOT NULL,
@@ -22,4 +22,4 @@ CREATE TRIGGER b64decode_attachment
     BEFORE INSERT OR UPDATE OF attachment
     ON accounting.purchase_invoices
     FOR EACH ROW
-    EXECUTE FUNCTION accounting.purchase_invoice_b64decode();
+    EXECUTE FUNCTION accounting.b64decode_attachment();

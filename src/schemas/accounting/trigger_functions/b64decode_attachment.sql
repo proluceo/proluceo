@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION accounting.purchase_invoice_b64decode()
+CREATE OR REPLACE FUNCTION accounting.b64decode_attachment()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100
