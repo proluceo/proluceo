@@ -17,3 +17,9 @@ ALTER TABLE ONLY accounting.purchase_invoices
 
 ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_company_fk FOREIGN KEY (company_id) REFERENCES common.companies(company_id);
+
+CREATE TRIGGER b64decode_attachment
+    BEFORE INSERT OR UPDATE OF attachment
+    ON accounting.purchase_invoices
+    FOR EACH ROW
+    EXECUTE FUNCTION accounting.purchase_invoice_b64decode();
