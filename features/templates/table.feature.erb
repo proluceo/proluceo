@@ -1,0 +1,5 @@
+Feature: Table <%= schema_name %>.<%= table_name %>
+  Scenario: Table should exists
+    Given the sql path '<%= task.name %>'
+    Then the table '<%= schema_name %>.<%= table_name %>' should exists
+

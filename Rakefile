@@ -1,6 +1,8 @@
 require 'rake/clean'
 require 'pathname'
 require 'json'
+require 'fileutils'
+require 'erb'
 
 SRC_PATH = Pathname.new('src')
 TMP_PATH = Pathname.new('tmp')
@@ -28,6 +30,14 @@ def create_task_with_deps(path)
     end
 
     deps_fqn = []
+    # Always add schema to deps
+    nodes = task_fqn.split(':')
+    if nodes[0] == 'schemas' && nodes.size > 2
+      schema_name = nodes[1]
+      deps_fqn << ['schemas', schema_name].join(':') unless schema_name == 'public'
+    end
+
+    # Parse deps metadata
     File.open(path) do |f|
       matches = /-- depends_on: (\[.*\])/.match(f.gets)
       if !matches.nil?
@@ -77,8 +87,33 @@ SRC_PATH.each_child { |child| create_task_with_deps(child) }
 
 file 'schema.sql' => [:build] do
   sh "cat #{TMP_PATH}/* > #{BUILD_PATH}/schema.sql"
+  rm Dir.glob("#{TMP_PATH}/*")
+  @sequence = 0
 end
 
-task complete: [:clean, :tmp, :"roles:all", :"schemas:all", :"permissions", 'schema.sql']
+
+## Testing
+def generate_cucumber_features
+  FileUtils.rm_r('features/schemas')
+  Rake::Task.tasks().each do |task|
+    nodes = task.name.split(':')
+    if nodes.include?('tables')
+      table_name= nodes[-1]
+      next if table_name == 'all'
+      schema_name = nodes[1]
+
+      template = ERB.new(File.read(File.join('features', 'templates', 'table.feature.erb')))
+      dirpath = FileUtils.mkpath(File.join(['features'] + nodes[0..-2]))
+      File.open(File.join(dirpath, table_name + '.feature'), 'w') { |f| f.write(template.result(binding)) }
+    end
+  end
+end
+
+task :cucumber do
+  generate_cucumber_features
+end
+
+task init: [:clean, :tmp, :"roles:all"]
+task complete: [:init, :"schemas:all", :"permissions", 'schema.sql']
 task default: [:complete]
 
