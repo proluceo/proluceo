@@ -22,13 +22,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
-        uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          bundler-cache: true
       - name: Run tests
-        run: cucumber
+        run: bundle exec cucumber
       - name: Build schema
-        run: rake
+        run: bundle exec rake
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
