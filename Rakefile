@@ -14,7 +14,6 @@ CLEAN.add("#{BUILD_PATH}/schema.sql")
 
 @sequence = 0
 def add_source(filepath)
-  puts "Adding #{filepath}"
   filename = filepath.each_filename.to_a.join('_')
   FileUtils.ln_s(filepath.relative_path_from(TMP_PATH), TMP_PATH + "#{@sequence.to_s.rjust(10,'0')}-#{filename}")
   @sequence += 1
