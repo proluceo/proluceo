@@ -67,5 +67,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: type=ref, event=branch
+
+      - name: Pulling image
+        run: docker pull ${{ steps.meta.outputs.tags }}
+
       - name: Run Cucumber
+        env:
+          POSTGRES_IMAGE: ${{ steps.meta.outputs.tags }}
         run: bundle exec cucumber

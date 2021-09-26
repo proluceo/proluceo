@@ -30,7 +30,7 @@ File.open('./empty.nothing', 'w')
 
 postgres_container = Docker::Container.create(
   'name' => 'testdb',
-  'Image' => 'ghcr.io/proluceo/proluceo:main',
+  'Image' => ENV['POSTGRES_IMAGE'] || 'ghcr.io/proluceo/proluceo:main',
   'ExposedPorts' => { '5432/tcp' => {} },
   'ENV' => ['POSTGRES_HOST_AUTH_METHOD=trust'],
   'HostConfig' => {
