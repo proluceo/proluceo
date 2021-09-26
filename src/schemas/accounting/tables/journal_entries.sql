@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:trigger_functions:validate_journal_entry_balance", "::schemas:accounting:types:journal_entry_direction", "::schemas:common:tables:companies"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:trigger_functions:validate_journal_entry_balance", "::schemas:accounting:types:journal_entry_direction", "::schemas:common:tables:companies", "accounts"]
 CREATE TABLE accounting.journal_entries (
     company_id integer NOT NULL,
     journal_entry_id uuid NOT NULL,

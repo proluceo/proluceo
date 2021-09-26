@@ -24,7 +24,9 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
         with:
-          ruby-version: 2.7
+          ruby-version: 3.0
+      - name: Run tests
+        run: cucumber
       - name: Build schema
         run: rake
       - name: Log in to the Container registry
