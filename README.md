@@ -1,1 +1,5 @@
 proluceo
+
+Deps:
+cmake
+pkgconfig

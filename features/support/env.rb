@@ -4,7 +4,12 @@ require 'pg'
 
 def execute_build(conn)
   Rake::Task['schema.sql'].invoke
-  File.open('build/schema.sql', 'r') {|f| conn.exec(f.read)}
+  begin
+    File.open('build/schema.sql', 'r') {|f| conn.exec(f.read)}
+  rescue PG::Error => e
+    puts "Error: " + e.inspect
+    raise e
+  end
   FileUtils.rm('build/schema.sql')
   Rake::Task.tasks.each(&:reenable)
 end

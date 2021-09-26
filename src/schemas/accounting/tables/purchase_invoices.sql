@@ -1,6 +1,6 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:types:purchase_invoice_line", "::schemas:accounting:trigger_functions:b64decode_attachment"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
 CREATE TABLE accounting.purchase_invoices (
-    purchase_invoice_id integer NOT NULL,
+    purchase_invoice_id uuid NOT NULL DEFAULT tuid_generate(),
     company_id integer NOT NULL,
     issued_on date NOT NULL,
     supplier text NOT NULL,
@@ -8,8 +8,7 @@ CREATE TABLE accounting.purchase_invoices (
     amount numeric(10,2) DEFAULT 0.0 NOT NULL,
     payment_account integer NOT NULL,
     paid_on date,
-    attachment bytea,
-    body accounting.purchase_invoice_line[]
+    attachment bytea
 );
 
 ALTER TABLE ONLY accounting.purchase_invoices
