@@ -7,6 +7,7 @@ require 'erb'
 SRC_PATH = Pathname.new('src')
 TMP_PATH = Pathname.new('tmp')
 BUILD_PATH = Pathname.new('build')
+FEATURES_PATH=Pathname.new('features/schemas')
 
 CLEAN.add("#{TMP_PATH}/*.sql")
 CLEAN.add("#{BUILD_PATH}/schema.sql")
@@ -94,7 +95,7 @@ end
 
 ## Testing
 def generate_cucumber_features
-  FileUtils.rm_r('features/schemas')
+  FileUtils.rm_r(FEATURES_PATH) if FEATURES_PATH.exist?
   Rake::Task.tasks().each do |task|
     nodes = task.name.split(':')
     if nodes.include?('tables')
