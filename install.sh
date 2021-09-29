@@ -26,12 +26,12 @@ make USE_PGXS=1 install
 #make USE_PGXS=1 install
 
 ## PG http
-#cd /tmp/pre_install
-#curl https://github.com/pramsey/pgsql-http/archive/master.zip -o http.zip -L
-#unzip http.zip
-#cd pgsql-http-master
-#make USE_PGXS=1
-#make USE_PGXS=1 install
+cd /tmp/pre_install
+curl https://github.com/pramsey/pgsql-http/archive/master.zip -o http.zip -L
+unzip http.zip
+cd pgsql-http-master
+make USE_PGXS=1
+make USE_PGXS=1 install
 
 
 ## Cleanup
