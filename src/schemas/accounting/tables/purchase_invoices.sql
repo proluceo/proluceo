@@ -6,9 +6,10 @@ CREATE TABLE accounting.purchase_invoices (
     supplier text NOT NULL,
     reference text,
     amount numeric(10,2) DEFAULT 0.0 NOT NULL,
-    payment_account integer NOT NULL,
+    payment_account_number integer NOT NULL,
     paid_on date,
-    attachment bytea
+    attachment_blob bytea,
+    attachment_present boolean NOT NULL GENERATED ALWAYS AS (attachment_blob IS NOT NULL) STORED
 );
 
 ALTER TABLE ONLY accounting.purchase_invoices
@@ -17,8 +18,18 @@ ALTER TABLE ONLY accounting.purchase_invoices
 ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_company_fk FOREIGN KEY (company_id) REFERENCES common.companies(company_id);
 
+ALTER TABLE ONLY accounting.purchase_invoices
+    ADD CONSTRAINT purchase_invoices_account_number_fk FOREIGN KEY (payment_account_number, company_id)
+    REFERENCES accounting.accounts ("number", company_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+    NOT VALID;
+
+CREATE INDEX fki_purchase_invoices_account_number_fk
+    ON accounting.purchase_invoices(payment_account_number, company_id);
+
 CREATE TRIGGER b64decode_attachment
-    BEFORE INSERT OR UPDATE OF attachment
+    BEFORE INSERT OR UPDATE OF attachment_blob
     ON accounting.purchase_invoices
     FOR EACH ROW
     EXECUTE FUNCTION accounting.b64decode_attachment();
