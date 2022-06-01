@@ -1,4 +1,4 @@
-FROM postgres:13
+FROM postgres:14
 #ADD initdb.sql /docker-entrypoint-initdb.d
 
 ENV POSTGRES_USER=proluceo PGUSER=proluceo

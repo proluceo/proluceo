@@ -33,6 +33,14 @@ cd pgsql-http-master
 make USE_PGXS=1
 make USE_PGXS=1 install
 
+## PG auth0
+cd /tmp/pre_install
+curl https://github.com/brunoenten/pg_auth0/archive/master.zip -o auth0.zip -L
+unzip auth0.zip
+cd pg_auth0-master
+make USE_PGXS=1 install
+
+
 
 ## Cleanup
 #apt-get remove git postgresql-server-dev-12 build-essential libreadline-dev zlib1g-dev  \
