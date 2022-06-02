@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
+-- depends_on: ["::schemas:common:tables:companies", "accounts", "::schemas:accounting:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
 CREATE TABLE accounting.purchase_invoices (
     purchase_invoice_id uuid NOT NULL DEFAULT tuid_generate(),
     company_id integer NOT NULL,
