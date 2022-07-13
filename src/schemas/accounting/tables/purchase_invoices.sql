@@ -1,8 +1,9 @@
--- depends_on: ["::schemas:common:tables:companies", "accounts", "::schemas:accounting:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
+-- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies", "accounts", "::schemas:accounting:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
 CREATE TABLE accounting.purchase_invoices (
     purchase_invoice_id uuid NOT NULL DEFAULT tuid_generate(),
     company_id integer NOT NULL,
     issued_on date NOT NULL,
+    currency accounting.currency NOT NULL,
     supplier text NOT NULL,
     reference text,
     amount numeric(10,2) DEFAULT 0.0 NOT NULL,
