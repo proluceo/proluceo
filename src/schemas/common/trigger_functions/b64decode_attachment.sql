@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION accounting.b64decode_attachment()
+CREATE OR REPLACE FUNCTION common.b64decode_attachment()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100

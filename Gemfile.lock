@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/brunoenten/pg_builder.git
   revision: 95248ebb52b555578d9a2c667eef2ebeb577e267
+  branch: master
   specs:
     pg_builder (0.1.0)
       cucumber (~> 7.0)

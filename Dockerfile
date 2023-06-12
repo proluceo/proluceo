@@ -1,5 +1,4 @@
-FROM postgres:14
-#ADD initdb.sql /docker-entrypoint-initdb.d
+FROM postgres:15
 
 ENV POSTGRES_USER=proluceo PGUSER=proluceo
 ENV PGPASSWD=choucroute POSTGRES_PASSWORD=choucroute
@@ -10,4 +9,4 @@ RUN /install.sh
 
 ADD build/schema.sql /docker-entrypoint-initdb.d
 
-#CMD docker-entrypoint.sh -c shared_preload_libraries=pg_cron.so -c cron.database_name=skiflow
+#CMD docker-entrypoint.sh -c shared_preload_libraries=pg_cron.so -c cron.database_name=proluceo

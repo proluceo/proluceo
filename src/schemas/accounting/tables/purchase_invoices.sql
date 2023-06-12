@@ -1,16 +1,15 @@
--- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies", "accounts", "::schemas:accounting:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
+-- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies", "accounts", "::schemas:public:extensions:tuid"]
 CREATE TABLE accounting.purchase_invoices (
-    purchase_invoice_id uuid NOT NULL DEFAULT tuid_generate(),
+    purchase_invoice_id uuid NOT NULL DEFAULT public.tuid_generate(),
     company_id integer NOT NULL,
+    document_id uuid,
     issued_on date NOT NULL,
     currency accounting.currency NOT NULL,
     supplier text NOT NULL,
     reference text,
     amount numeric(10,2) DEFAULT 0.0 NOT NULL,
     payment_account_number integer NOT NULL,
-    paid_on date,
-    attachment_blob bytea,
-    attachment_present boolean NOT NULL GENERATED ALWAYS AS (attachment_blob IS NOT NULL) STORED
+    paid_on date
 );
 
 ALTER TABLE ONLY accounting.purchase_invoices
@@ -18,6 +17,9 @@ ALTER TABLE ONLY accounting.purchase_invoices
 
 ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_company_fk FOREIGN KEY (company_id) REFERENCES common.companies(company_id);
+
+ALTER TABLE ONLY accounting.purchase_invoices
+    ADD CONSTRAINT purchase_invoices_document_fk FOREIGN KEY (document_id) REFERENCES common.document(document_id);
 
 ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_account_number_fk FOREIGN KEY (payment_account_number, company_id)
@@ -29,8 +31,11 @@ ALTER TABLE ONLY accounting.purchase_invoices
 CREATE INDEX fki_purchase_invoices_account_number_fk
     ON accounting.purchase_invoices(payment_account_number, company_id);
 
-CREATE TRIGGER b64decode_attachment
-    BEFORE INSERT OR UPDATE OF attachment_blob
+CREATE TRIGGER purchase_invoice_mark_document_processed
+    AFTER INSERT
     ON accounting.purchase_invoices
     FOR EACH ROW
-    EXECUTE FUNCTION accounting.b64decode_attachment();
+    EXECUTE FUNCTION common.mark_document_as_processed();
+
+COMMENT ON TRIGGER purchase_invoice_mark_document_processed ON accounting.purchase_invoices
+    IS 'Mark attached document as processed';
