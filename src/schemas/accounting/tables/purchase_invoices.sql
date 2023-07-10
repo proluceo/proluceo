@@ -5,7 +5,7 @@ CREATE TABLE accounting.purchase_invoices (
     document_id uuid,
     issued_on date NOT NULL,
     currency accounting.currency NOT NULL,
-    supplier text NOT NULL,
+    supplier_name text NOT NULL,
     reference text,
     amount numeric(10,2) DEFAULT 0.0 NOT NULL,
     payment_account_number integer NOT NULL,
@@ -25,6 +25,13 @@ ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_account_number_fk FOREIGN KEY (payment_account_number, company_id)
     REFERENCES accounting.accounts ("number", company_id)
     ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+    NOT VALID;
+
+ALTER TABLE ONLY accounting.purchase_invoices
+    ADD CONSTRAINT purchase_invoices_supplier_name_fk FOREIGN KEY (supplier_name, company_id)
+    REFERENCES accounting.suppliers ("name", company_id)
+    ON UPDATE CASCADE
     ON DELETE RESTRICT
     NOT VALID;
 
