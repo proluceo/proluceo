@@ -29,3 +29,5 @@ COMMENT ON TRIGGER ledger_entry_validate_balance_after_insert ON accounting.ledg
 CREATE TRIGGER ledger_entry_validate_balance_after_update AFTER UPDATE ON accounting.ledger_entries REFERENCING NEW TABLE AS new_ledger_entries FOR EACH STATEMENT EXECUTE FUNCTION accounting.validate_ledger_entry_balance();
 COMMENT ON TRIGGER ledger_entry_validate_balance_after_update ON accounting.ledger_entries IS 'Make sure that a new ledger entry is balanced, i.e. total credit = total debit.';
 
+CREATE TRIGGER ledger_entry_handle_negative_amount_before_update_insert BEFORE INSERT OR UPDATE OF amount, direction ON accounting.ledger_entries FOR EACH ROW EXECUTE FUNCTION accounting.handle_ledger_negative_amounts();
+COMMENT ON TRIGGER ledger_entry_handle_negative_amount_before_update_insert ON accounting.ledger_entries IS 'Handle negative amounts by switching direction';

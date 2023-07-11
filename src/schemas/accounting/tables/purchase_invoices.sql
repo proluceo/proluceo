@@ -7,7 +7,6 @@ CREATE TABLE accounting.purchase_invoices (
     currency accounting.currency NOT NULL,
     supplier_name text NOT NULL,
     reference text,
-    amount numeric(10,2) DEFAULT 0.0 NOT NULL,
     payment_account_number integer NOT NULL,
     paid_on date
 );
