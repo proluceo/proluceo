@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies", "accounts", "::schemas:public:extensions:tuid"]
+-- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies","::schemas:common:tables:documents","accounts", "::schemas:public:extensions:tuid","::schemas:accounting:tables:suppliers","::schemas:common:trigger_functions:mark_document_as_processed"]
 CREATE TABLE accounting.purchase_invoices (
     purchase_invoice_id uuid NOT NULL DEFAULT public.tuid_generate(),
     company_id integer NOT NULL,
@@ -8,7 +8,8 @@ CREATE TABLE accounting.purchase_invoices (
     supplier_name text NOT NULL,
     reference text,
     payment_account_number integer NOT NULL,
-    paid_on date
+    paid_on date,
+    meta jsonb NOT NULL DEFAULT '{}'
 );
 
 ALTER TABLE ONLY accounting.purchase_invoices
@@ -18,7 +19,7 @@ ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_company_fk FOREIGN KEY (company_id) REFERENCES common.companies(company_id);
 
 ALTER TABLE ONLY accounting.purchase_invoices
-    ADD CONSTRAINT purchase_invoices_document_fk FOREIGN KEY (document_id) REFERENCES common.document(document_id);
+    ADD CONSTRAINT purchase_invoices_document_fk FOREIGN KEY (document_id) REFERENCES common.documents(document_id);
 
 ALTER TABLE ONLY accounting.purchase_invoices
     ADD CONSTRAINT purchase_invoices_account_number_fk FOREIGN KEY (payment_account_number, company_id)

@@ -1,5 +1,5 @@
 -- depends_on: ["::schemas:public:extensions:tuid", "::schemas:accounting:tables:purchase_invoices", "::schemas:accounting:tables:purchase_invoice_lines", "::schemas:accounting:tables:ledger_entries"]
-CREATE OR REPLACE FUNCTION accounting.ledger_entries_from_purchase_invoice(source_invoice_id uuid) RETURNS SETOF accounting.ledger_entries
+CREATE  FUNCTION accounting.ledger_entries_from_purchase_invoice(source_invoice_id uuid) RETURNS SETOF accounting.ledger_entries
     LANGUAGE plpgsql VOLATILE
     AS $$
 DECLARE
@@ -10,10 +10,7 @@ DECLARE
     output_ledger_entry_id uuid;
 BEGIN
     -- Look for purchase invoice
-    SELECT * INTO purchase_invoice FROM accounting.purchase_invoices WHERE purchase_invoices.purchase_invoice_id=source_invoice_id;
-    IF purchase_invoice.purchase_invoice_id IS NULL THEN
-        RAISE 'Cannot find purchase invoice %', source_invoice_id;
-    END IF;
+    SELECT * INTO STRICT purchase_invoice FROM accounting.purchase_invoices WHERE purchase_invoices.purchase_invoice_id=source_invoice_id;
 
     -- Generate unique id for new ledger entries
     output_ledger_entry_id = public.tuid_generate();

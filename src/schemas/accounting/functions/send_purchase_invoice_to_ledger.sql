@@ -3,19 +3,15 @@ CREATE FUNCTION accounting.send_purchase_invoice_to_ledger(invoice_to_send_id uu
     LANGUAGE plpgsql VOLATILE
     AS $$
 DECLARE
-    accounting.puchase_invoices purchase_invoice;
-    purchase_invoice_line accouting.purchase_invoice_lines;
+    created_ledger_entry_id uuid;
+    invoice_metadata jsonb;
 BEGIN
-    -- Look for purchase invoice
-    SELECT * INTO purchase_invoice FROM accounting.purchase_invoices WHERE purchase_invoices.purchase_invoice_id=invoice_to_send_id;
-    IF purchase_invoice.uuid IS NULL THEN
-        RAISE 'Cannot find purchase invoice %', invoice_to_send_id;
-    END IF;
+    INSERT INTO accounting.ledger_entries SELECT * FROM accounting.ledger_entries_from_purchase_invoice(invoice_to_send_id) RETURNING ledger_entries.ledger_entry_id INTO created_ledger_entry_id;
+    invoice_metadata = jsonb_build_object(    'ledger_entry_id', created_ledger_entry_id,
+                                              'sent_to_ledger_at', CURRENT_TIMESTAMP(0)
+                                        );
+    UPDATE accounting.purchase_invoices SET meta = meta || invoice_metadata WHERE purchase_invoices.purchase_invoice_id = invoice_to_send_id;
 
-    -- Loop through lines
-    FOR purchase_invoice_line IN SELECT * FROM accounting.purchase_invoice_lines WHERE purchase_invoice_lines.purchase_invoice_id=invoice_to_send_id LOOP
-        INSERT INTO
-    END LOOP;
 END
 $$;
 

@@ -33,11 +33,11 @@ cd pgsql-http-master
 make USE_PGXS=1
 make USE_PGXS=1 install
 
-## PG auth0
+## PG oxr
 cd /tmp/pre_install
-curl https://github.com/brunoenten/pg_auth0/archive/master.zip -o auth0.zip -L
-unzip auth0.zip
-cd pg_auth0-master
+curl https://github.com/brunoenten/pg_oxr/archive/master.zip -o oxr.zip -L
+unzip oxr.zip
+cd pg_oxr-master
 make USE_PGXS=1 install
 
 

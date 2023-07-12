@@ -1,4 +1,4 @@
--- depends_on: [::schemas:accounting:types:ledger_entry_direction"]
+-- depends_on: ["::schemas:accounting:types:ledger_entry_direction"]
 CREATE FUNCTION accounting.handle_ledger_negative_amounts() RETURNS trigger
     LANGUAGE plpgsql IMMUTABLE
     AS $$

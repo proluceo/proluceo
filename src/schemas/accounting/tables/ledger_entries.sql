@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:trigger_functions:validate_ledger_entry_balance", "::schemas:accounting:types:ledger_entry_direction", "::schemas:common:tables:companies", "accounts"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:accounting:trigger_functions:validate_ledger_entry_balance", "::schemas:accounting:types:ledger_entry_direction", "::schemas:common:tables:companies", "accounts", "::schemas:accounting:trigger_functions:handle_ledger_negative_amounts"]
 CREATE TABLE accounting.ledger_entries (
     company_id integer NOT NULL,
     ledger_entry_id uuid NOT NULL,
