@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/brunoenten/pg_builder.git
-  revision: a6ded3e140ff8c555e3606ae7e0f20f4c6a597a1
+  revision: 324d2b2fb24852b6ddf8f76957ca29d3afca13a9
   branch: master
   specs:
-    pg_builder (0.1.1)
+    pg_builder (0.1.2)
       cucumber (~> 7.0)
       docker-api (~> 2.2)
       pg (~> 1.2)
@@ -70,4 +70,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   2.2.32
+   2.4.10
