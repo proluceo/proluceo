@@ -15,8 +15,6 @@ cd pg_tuid-master/pg_c
 make USE_PGXS=1
 make USE_PGXS=1 install
 
-
-
 ## PG Cron
 #cd /tmp/pre_install
 #curl https://github.com/citusdata/pg_cron/archive/main.zip -o cron.zip -L
@@ -40,7 +38,12 @@ unzip oxr.zip
 cd pg_oxr-master
 make USE_PGXS=1 install
 
-
+## PG fsm
+cd /tmp/pre_install
+curl https://github.com/brunoenten/pg_fsm/archive/master.zip -o fsm.zip -L
+unzip fsm.zip
+cd pg_fsm-master
+make USE_PGXS=1 install
 
 ## Cleanup
 #apt-get remove git postgresql-server-dev-14 build-essential libreadline-dev zlib1g-dev  \
