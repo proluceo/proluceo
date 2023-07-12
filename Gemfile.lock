@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/brunoenten/pg_builder.git
-  revision: 94d85e4aa001a567cc944b1f92c0c3f75b20bdcc
+  revision: 71ab52e8eb572b671e87ac2aac72fc4b5e2c54a8
   branch: master
   specs:
-    pg_builder (0.1.3)
+    pg_builder (0.1.4)
       cucumber (~> 7.0)
       docker-api (~> 2.2)
       pg (~> 1.2)
