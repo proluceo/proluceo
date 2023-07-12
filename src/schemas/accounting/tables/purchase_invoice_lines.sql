@@ -33,6 +33,3 @@ ALTER TABLE accounting.purchase_invoice_lines
     REFERENCES accounting.purchase_invoices (purchase_invoice_id) MATCH SIMPLE
     ON UPDATE RESTRICT
     ON DELETE CASCADE;
-
--- Add body column to purchase_invoice
-ALTER TABLE accounting.purchase_invoices ADD COLUMN body accounting.purchase_invoice_lines[];
