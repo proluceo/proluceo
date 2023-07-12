@@ -24,7 +24,7 @@ jobs:
           bundler-cache: true
 
       - name: Run Cucumber
-        run: bundle exec rake cucumber
+        run: bundle exec rake -AT
 
   build-and-push-image:
     needs: run-tests
