@@ -13,7 +13,21 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run Cucumber
+        run: bundle exec rake cucumber
+
   build-and-push-image:
+    needs: run-tests
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -49,35 +63,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  run-tests:
-    needs: build-and-push-image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: type=ref, event=branch
-
-      - name: Pulling image
-        run: docker pull ${{ steps.meta.outputs.tags }}
-
-      - name: Run Cucumber
-        env:
-          POSTGRES_IMAGE: ${{ steps.meta.outputs.tags }}
-        run: bundle exec rake cucumber
