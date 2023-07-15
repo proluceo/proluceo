@@ -1,0 +1,4 @@
+{
+    "vscode-postgres.defaultConnection": "Proluceo PROD",
+    "vscode-postgres.defaultDatabase": "proluceo"
+}

@@ -1,5 +1,5 @@
 -- depends_on: ["::schemas:public:extensions:tuid", "::schemas:accounting:tables:purchase_invoices", "::schemas:accounting:tables:purchase_invoice_lines", "::schemas:accounting:tables:ledger_entries"]
-CREATE  FUNCTION accounting.ledger_entries_from_purchase_invoice(source_invoice_id uuid, rate numeric) RETURNS SETOF accounting.ledger_entries
+CREATE FUNCTION accounting.ledger_entries_from_purchase_invoice(source_invoice_id uuid, rate numeric, output_ledger_entry_id uuid) RETURNS SETOF accounting.ledger_entries
     LANGUAGE plpgsql VOLATILE
     AS $$
 DECLARE
@@ -7,14 +7,10 @@ DECLARE
     purchase_invoice_line accounting.purchase_invoice_lines;
 	purchase_invoice_amount numeric(10,2);
     output_ledger_entry accounting.ledger_entries;
-    output_ledger_entry_id uuid;
     output_ledger_entry_meta jsonb;
 BEGIN
     -- Look for purchase invoice
     SELECT * INTO STRICT purchase_invoice FROM accounting.purchase_invoices WHERE purchase_invoices.purchase_invoice_id=source_invoice_id;
-
-    -- Generate unique id for new ledger entries
-    output_ledger_entry_id = public.tuid_generate();
 
     -- Build ledger entry metadata
     output_ledger_entry_meta = jsonb_build_object(
@@ -53,4 +49,4 @@ BEGIN
 END
 $$;
 
-COMMENT ON FUNCTION accounting.ledger_entries_from_purchase_invoice(purchase_invoice_id uuid) IS 'Generate ledger entries from purchase_invoice_lines';
+COMMENT ON FUNCTION accounting.ledger_entries_from_purchase_invoice(source_invoice_id uuid, rate numeric, output_ledger_entry_id uuid) IS 'Generate ledger entries from purchase_invoice_lines';
