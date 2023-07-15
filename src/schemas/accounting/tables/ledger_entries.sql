@@ -5,7 +5,8 @@ CREATE TABLE accounting.ledger_entries (
     account_number integer NOT NULL,
     position date,
     amount numeric(10,2) NOT NULL,
-    direction accounting.ledger_entry_direction NOT NULL
+    direction accounting.ledger_entry_direction NOT NULL,
+    meta jsonb NOT NULL DEFAULT '{}'
 );
 
 ALTER TABLE ONLY accounting.ledger_entries

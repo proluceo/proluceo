@@ -46,3 +46,20 @@ CREATE TRIGGER purchase_invoice_mark_document_processed
 
 COMMENT ON TRIGGER purchase_invoice_mark_document_processed ON accounting.purchase_invoices
     IS 'Mark attached document as processed';
+
+CREATE TRIGGER purchase_invoice_send_to_ledger
+    AFTER UPDATE OF fsm_current_state
+    ON accounting.purchase_invoices
+    FOR EACH ROW
+    EXECUTE FUNCTION accounting.handle_purchase_invoice_send_to_ledger_event();
+
+CREATE TRIGGER purchase_invoice_restrict_delete
+    BEFORE DELETE
+    ON accounting.purchase_invoices
+    FOR EACH ROW
+    EXECUTE FUNCTION accounting.restrict_purchase_invoice_delete();
+
+
+-- Add finite state machine
+SELECT fsm.add_to_table('accounting.purchase_invoices');
+SELECT fsm.add_transition('accounting.purchase_invoices', 'start', 'send_to_ledger', 'sent_to_ledger');
