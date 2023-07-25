@@ -7,6 +7,10 @@ ENV PGDATA=/var/lib/postgresql/data/pgdata
 ADD install.sh /install.sh
 RUN /install.sh
 
+# Rebuild locale
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+
 ADD build/schema.sql /docker-entrypoint-initdb.d
 
 #CMD docker-entrypoint.sh -c shared_preload_libraries=pg_cron.so -c cron.database_name=proluceo
