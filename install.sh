@@ -4,7 +4,7 @@
 #echo 'Acquire::http { Proxy "http://172.17.95.92:3142"; }' | tee -a /etc/apt/apt.conf.d/30proxy
 
 apt-get update
-apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev -y
+apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev libphonenumber-dev -y
 mkdir /tmp/pre_install
 
 ## PG TUID
@@ -43,6 +43,13 @@ cd /tmp/pre_install
 curl https://github.com/brunoenten/pg_fsm/archive/master.zip -o fsm.zip -L
 unzip fsm.zip
 cd pg_fsm-master
+make USE_PGXS=1 install
+
+## PG libphonenumber
+cd /tmp/pre_install
+curl https://github.com/blm768/pg-libphonenumber/archive/master.zip -o libphonenumber.zip -L
+unzip libphonenumber.zip
+cd pg-libphonenumber-master
 make USE_PGXS=1 install
 
 ## Cleanup
