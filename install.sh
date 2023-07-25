@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set proxy during dev
-echo 'Acquire::http { Proxy "http://172.20.75.97:3142"; }' | tee -a /etc/apt/apt.conf.d/30proxy
+#echo 'Acquire::http { Proxy "http://172.20.75.97:3142"; }' | tee -a /etc/apt/apt.conf.d/30proxy
 
 apt-get update
 apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev libphonenumber-dev ca-certificates -y --no-install-recommends
