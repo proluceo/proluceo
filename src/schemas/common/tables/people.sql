@@ -1,10 +1,10 @@
--- depends_on: ["::schemas:public:extensions:tuid", "::schemas:common:domains:email", "::schemas:public:extensions:libphonenumber"]
+-- depends_on: ["::schemas:common:functions:tuid6", "::schemas:common:domains:email_address", "::schemas:public:extensions:libphonenumber"]
 CREATE TABLE common.people
 (
-    person_id uuid NOT NULL DEFAULT public.tuid_generate(),
+    person_id uuid NOT NULL DEFAULT common.tuid6(),
     first_name text NOT NULL,
     last_name text NOT NULL,
-    work_email email,
+    work_email common.email_address,
     phone packed_phone_number,
     meta jsonb NOT NULL DEFAULT '{}',
     PRIMARY KEY (person_id),
