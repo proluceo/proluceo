@@ -1,6 +1,6 @@
--- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies","::schemas:common:tables:documents","accounts", "::schemas:public:extensions:tuid","::schemas:accounting:tables:suppliers","::schemas:common:trigger_functions:mark_document_as_processed", "::schemas:accounting:trigger_functions:restrict_purchase_invoice_delete", "::schemas:public:extensions:fsm"]
+-- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies","::schemas:common:tables:documents","accounts", "::schemas:common:functions:tuid6","::schemas:accounting:tables:suppliers","::schemas:common:trigger_functions:mark_document_as_processed", "::schemas:accounting:trigger_functions:restrict_purchase_invoice_delete", "::schemas:public:extensions:fsm"]
 CREATE TABLE accounting.purchase_invoices (
-    purchase_invoice_id uuid NOT NULL DEFAULT public.tuid_generate(),
+    purchase_invoice_id uuid NOT NULL DEFAULT common.tuid6(),
     company_id integer NOT NULL,
     document_id uuid,
     issued_on date NOT NULL,

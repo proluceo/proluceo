@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:public:extensions:tuid", "::schemas:accounting:tables:purchase_invoices", "::schemas:accounting:tables:purchase_invoice_lines", "::schemas:accounting:tables:ledger_entries"]
+-- depends_on: ["::schemas:accounting:tables:purchase_invoices", "::schemas:accounting:tables:purchase_invoice_lines", "::schemas:accounting:tables:ledger_entries"]
 CREATE FUNCTION accounting.ledger_entries_from_purchase_invoice(source_invoice_id uuid, rate numeric, output_ledger_entry_id uuid) RETURNS SETOF accounting.ledger_entries
     LANGUAGE plpgsql VOLATILE
     AS $$

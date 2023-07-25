@@ -1,8 +1,8 @@
--- depends_on: ["::schemas:common:tables:companies", "::schemas:common:trigger_functions:b64decode_attachment", "::schemas:public:extensions:tuid"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:common:trigger_functions:b64decode_attachment", "::schemas:common:functions:tuid6"]
 CREATE TABLE IF NOT EXISTS common.documents
 (
     company_id integer NOT NULL,
-    document_id uuid NOT NULL DEFAULT public.tuid_generate(),
+    document_id uuid NOT NULL DEFAULT common.tuid6(),
     meta jsonb NOT NULL DEFAULT '{}'::jsonb,
     attachment_blob bytea,
     attachment_present boolean NOT NULL GENERATED ALWAYS AS ((attachment_blob IS NOT NULL)) STORED,

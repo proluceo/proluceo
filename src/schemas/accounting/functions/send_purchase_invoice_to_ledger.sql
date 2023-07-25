@@ -1,4 +1,4 @@
--- depends_on: ["::schemas:public:extensions:tuid", "::schemas:accounting:tables:purchase_invoices"]
+-- depends_on: ["::schemas:common:functions:tuid6", "::schemas:accounting:tables:purchase_invoices"]
 CREATE FUNCTION accounting.send_purchase_invoice_to_ledger(invoice_to_send accounting.purchase_invoices) RETURNS void
     LANGUAGE plpgsql VOLATILE
     AS $$
@@ -16,7 +16,7 @@ BEGIN
     END IF;
 
     -- Generate unique id for new ledger entries
-    output_ledger_entry_id = public.tuid_generate();
+    output_ledger_entry_id = common.tuid6();
 
 
     -- Generate ledger entries and insert them

@@ -8,12 +8,12 @@ apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4
 mkdir /tmp/pre_install
 
 ## PG TUID
-cd /tmp/pre_install
-curl https://github.com/tanglebones/pg_tuid/archive/master.zip -o tuid.zip -L
-unzip tuid.zip
-cd pg_tuid-master/pg_c
-make USE_PGXS=1
-make USE_PGXS=1 install
+#cd /tmp/pre_install
+#curl https://github.com/tanglebones/pg_tuid/archive/master.zip -o tuid.zip -L
+#unzip tuid.zip
+#cd pg_tuid-master/pg_c
+#make USE_PGXS=1
+#make USE_PGXS=1 install
 
 ## PG Cron
 #cd /tmp/pre_install
