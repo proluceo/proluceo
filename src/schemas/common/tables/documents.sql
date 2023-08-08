@@ -1,5 +1,5 @@
 -- depends_on: ["::schemas:common:tables:companies", "::schemas:common:trigger_functions:b64decode_attachment", "::schemas:common:functions:tuid6"]
-CREATE TABLE IF NOT EXISTS common.documents
+CREATE TABLE common.documents
 (
     company_id integer NOT NULL,
     document_id uuid NOT NULL DEFAULT common.tuid6(),

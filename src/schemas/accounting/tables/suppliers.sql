@@ -1,6 +1,6 @@
 -- depends_on: ["::schemas:accounting:types:currency","::schemas:common:tables:companies"]
 
-CREATE TABLE IF NOT EXISTS accounting.suppliers
+CREATE TABLE accounting.suppliers
 (
     company_id integer NOT NULL,
     name text NOT NULL,

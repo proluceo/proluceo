@@ -1,6 +1,7 @@
--- depends_on: ["::schemas:common:functions:tuid6", "::schemas:common:domains:email_address", "::schemas:public:extensions:libphonenumber"]
+-- depends_on: ["::schemas:common:tables:companies", "::schemas:common:functions:tuid6", "::schemas:common:domains:email_address", "::schemas:public:extensions:libphonenumber"]
 CREATE TABLE common.people
 (
+    company_id int NOT NULL REFERENCES common.companies,
     person_id uuid NOT NULL DEFAULT common.tuid6(),
     first_name text NOT NULL,
     last_name text NOT NULL,

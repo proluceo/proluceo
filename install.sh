@@ -4,7 +4,7 @@
 #echo 'Acquire::http { Proxy "http://172.20.75.97:3142"; }' | tee -a /etc/apt/apt.conf.d/30proxy
 
 apt-get update
-apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev libphonenumber-dev ca-certificates -y --no-install-recommends
+apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4 libcurl4-openssl-dev libphonenumber8 libphonenumber-dev ca-certificates libpam-dev -y --no-install-recommends
 mkdir /tmp/pre_install
 
 ## PG TUID
@@ -52,10 +52,21 @@ unzip libphonenumber.zip
 cd pg-libphonenumber-master
 make USE_PGXS=1 install
 
+## Oauth2
+cd /tmp/pre_install
+curl https://github.com/please-openit/pam-oauth2/archive/master.zip -o pam-oauth2.zip -L
+unzip pam-oauth2
+cd pam-oauth2-master
+curl https://github.com/zserge/jsmn/archive/master.zip -o jsmn.zip -L
+rmdir jsmn
+unzip jsmn.zip
+mv jsmn-master jsmn
+make
+make install
+
 ## Cleanup
-#apt-get remove git postgresql-server-dev-14 build-essential libreadline-dev zlib1g-dev  \
-#     -y
-#apt-get autoremove -y
-#apt-get autoclean -y
+apt-get remove git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev libphonenumber-dev ca-certificates libpam-dev -y
+apt-get autoremove -y
+apt-get autoclean -y
 cd /
 rm -rf /tmp/pre_install
