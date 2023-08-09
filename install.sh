@@ -1,5 +1,5 @@
-#!/bin/sh
-
+#!/bin/bash
+set -e
 # Set proxy during dev
 #echo 'Acquire::http { Proxy "http://172.20.75.97:3142"; }' | tee -a /etc/apt/apt.conf.d/30proxy
 
