@@ -5,11 +5,17 @@ ENV PGPASSWD=choucroute POSTGRES_PASSWORD=choucroute
 ENV PGDATA=/var/lib/postgresql/data/pgdata
 ENV POSTGRES_HOST_AUTH_METHOD="pam pamservice=pg_auth"
 
+### Pam authentication
 # PAM service
 ADD pg_auth /etc/pam.d/pg_auth
 
 # Proluceo user
 RUN useradd --no-log-init -d /tmp -s /bin/false -g 999 -p "$(openssl passwd -1 $PGPASSWD)" $POSTGRES_USER
+
+# Add postgres user to shadow group so it can verify passwords
+RUN usermod -aG shadow postgres
+
+# Run install script to add extensions
 ADD install.sh /install.sh
 RUN /install.sh
 

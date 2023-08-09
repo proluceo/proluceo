@@ -4,7 +4,7 @@
 #echo 'Acquire::http { Proxy "http://172.20.75.97:3142"; }' | tee -a /etc/apt/apt.conf.d/30proxy
 
 apt-get update
-apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4 libcurl4-openssl-dev libphonenumber8 libphonenumber-dev ca-certificates libpam-dev -y --no-install-recommends
+apt-get install git postgresql-server-dev-15 build-essential curl unzip libcurl4 libcurl4-openssl-dev libphonenumber8 libphonenumber-dev ca-certificates libpam0g libpam-dev -y --no-install-recommends
 mkdir /tmp/pre_install
 
 ## PG TUID
@@ -65,7 +65,7 @@ make
 make install
 
 ## Cleanup
-apt-get remove git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev libphonenumber-dev ca-certificates libpam-dev -y
+apt-get remove git postgresql-server-dev-15 build-essential curl unzip libcurl4-openssl-dev libphonenumber-dev ca-certificates libpam0g-dev -y
 apt-get autoremove -y
 apt-get autoclean -y
 cd /
