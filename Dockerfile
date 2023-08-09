@@ -12,6 +12,9 @@ ADD pg_auth /etc/pam.d/pg_auth
 # Proluceo user
 RUN useradd --no-log-init -d /tmp -s /bin/false -g 999 -p "$(openssl passwd -1 $PGPASSWD)" $POSTGRES_USER
 
+# Authenticator public user
+RUN useradd --no-log-init -d /tmp -s /bin/false -g 999 -p "" authenticator
+
 # Add postgres user to shadow group so it can verify passwords
 RUN usermod -aG shadow postgres
 

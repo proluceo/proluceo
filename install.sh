@@ -38,6 +38,13 @@ unzip oxr.zip
 cd pg_oxr-master
 make USE_PGXS=1 install
 
+## PG role_meta
+cd /tmp/pre_install
+curl https://github.com/brunoenten/pg_role_meta/archive/master.zip -o role_meta.zip -L
+unzip role_meta.zip
+cd pg_role_meta-master
+make USE_PGXS=1 install
+
 ## PG fsm
 cd /tmp/pre_install
 curl https://github.com/brunoenten/pg_fsm/archive/master.zip -o fsm.zip -L
